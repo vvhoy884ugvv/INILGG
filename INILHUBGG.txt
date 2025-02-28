@@ -127,12 +127,12 @@ local creations = 0
 local BarIn = "rbxassetid://122739889648244"
 --Bar
 local SearchIn = "rbxassetid://12112852615"
-local MenuIn = "rbxassetid://11949054349"
+local MenuIn = "rbxassetid://122739889648244"
 local OutIn = "rbxassetid://11949055629"
 --Minimized
 local IconIn = "rbxassetid://122739889648244"
 --Scroll
-local MoreIn = "rbxassetid://11949185875"
+local MoreIn = "rbxassetid://122739889648244"
 --Features
 local TogOn = "rbxassetid://12007342639"
 local TogOff = "rbxassetid://12007348679"
