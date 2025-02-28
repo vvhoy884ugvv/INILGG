@@ -2,7 +2,11 @@ local CoreGui = game:GetService("CoreGui")
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 
-local windowsize = UDim2.new(0.6, 0, 0.7, 0) -- تكبير القائمة لتناسب الجوال
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "INIL HUB" -- تغيير اسم السكربت
+ScreenGui.Parent = CoreGui
+
+local windowsize = UDim2.new(0.7, 0, 0.8, 0) -- تكبير القائمة لتناسب الجوال
 
 -- إنشاء نافذة
 local Window = Instance.new("Frame")
@@ -16,59 +20,44 @@ Window.BorderSizePixel = 0
 Window.Draggable = false
 Window.ClipsDescendants = false
 Window.SizeConstraint = "RelativeYY"
-Window.Parent = CoreGui
+Window.Parent = ScreenGui
 
--- زر القائمة (Menu)
-local Menu = Instance.new("ImageButton")
-Menu.Visible = true
-Menu.Name = "Menu"
-Menu.BorderSizePixel = 0
-Menu.Image = "rbxassetid://122739889648244" -- إضافة الصورة المطلوبة
-Menu.ImageTransparency = 0
-Menu.Active = true
-Menu.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- يبدأ باللون الأحمر
-Menu.Position = UDim2.new(0.9025, 0, 0.505, 0)
-Menu.AnchorPoint = Vector2.new(0.5, 0.5)
-Menu.Size = UDim2.new(0.0375, 0, 0.925, 0)
-Menu.Transparency = 0
-Menu.BackgroundTransparency = 0
-Menu.BorderSizePixel = 0
-Menu.ZIndex = 4
-Menu.SizeConstraint = "RelativeXY"
-Menu.Parent = Window
+-- زر خارج القائمة
+local ToggleButton = Instance.new("ImageButton")
+ToggleButton.Visible = true
+ToggleButton.Name = "ToggleButton"
+ToggleButton.BorderSizePixel = 0
+ToggleButton.Image = "rbxassetid://122739889648244" -- إضافة الصورة المطلوبة
+ToggleButton.ImageTransparency = 0
+ToggleButton.Active = true
+ToggleButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- يبدأ باللون الأحمر
+ToggleButton.Position = UDim2.new(0.05, 0, 0.05, 0) -- يبقى خارج القائمة
+ToggleButton.Size = UDim2.new(0.1, 0, 0.1, 0)
+ToggleButton.Transparency = 0
+ToggleButton.BackgroundTransparency = 0
+ToggleButton.BorderSizePixel = 0
+ToggleButton.ZIndex = 5
+ToggleButton.SizeConstraint = "RelativeXY"
+ToggleButton.Parent = ScreenGui -- يكون خارج القائمة وليس داخل `Window`
 
--- تغيير اللون بشكل تدريجي
-local function ChangeColor()
+-- وظيفة إغلاق وفتح القائمة
+local isOpen = true
+local function ToggleMenu()
+    isOpen = not isOpen
+    Window.Visible = isOpen
+end
+ToggleButton.MouseButton1Click:Connect(ToggleMenu)
+
+-- تأثير ألوان الـ RGB (Rainbow Effect)
+local function RainbowEffect()
     while true do
-        local tweenInfo = TweenInfo.new(1.5, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut)
-
-        -- قائمة الألوان التي سيتغير بينها الزر
-        local colors = {
-            Color3.fromRGB(255, 0, 0),  -- أحمر
-            Color3.fromRGB(255, 165, 0), -- برتقالي
-            Color3.fromRGB(255, 255, 0), -- أصفر
-            Color3.fromRGB(0, 255, 0),  -- أخضر
-            Color3.fromRGB(0, 255, 255), -- سماوي
-            Color3.fromRGB(0, 0, 255),  -- أزرق
-            Color3.fromRGB(128, 0, 128)  -- بنفسجي
-        }
-
-        for _, color in pairs(colors) do
-            local tween = TweenService:Create(Menu, tweenInfo, {BackgroundColor3 = color})
-            tween:Play()
-            wait(1.5) -- انتظار حتى يظهر التغيير
+        for i = 0, 1, 0.01 do
+            local color = Color3.fromHSV(i, 1, 1) -- تحويل إلى ألوان الطيف المتغيرة
+            ToggleButton.BackgroundColor3 = color
+            task.wait(0.05) -- سرعة تغيير الألوان
         end
     end
 end
+task.spawn(RainbowEffect) -- تشغيل تأثير الألوان
 
--- تشغيل تغيير اللون
-task.spawn(ChangeColor)
-
--- وظيفة الفتح والإغلاق
-local function ToggleMenu()
-    Window.Visible = not Window.Visible
-end
-
-Menu.MouseButton1Click:Connect(ToggleMenu)
-
-return Window, Menu
+return ScreenGui, Window, ToggleButton
