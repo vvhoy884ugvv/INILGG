@@ -3,42 +3,64 @@ local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 
 local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "INIL HUB" -- تغيير اسم السكربت
+ScreenGui.Name = "INIL HUB" -- اسم السكربت يبقى كما هو
 ScreenGui.Parent = CoreGui
 
-local windowsize = UDim2.new(0.7, 0, 0.8, 0) -- تكبير القائمة لتناسب الجوال
+local windowsize = UDim2.new(0.55, 0, 0.65, 0) -- تكبير القائمة مع الحفاظ على الشكل الجمالي
 
--- إنشاء نافذة
+-- إنشاء نافذة القائمة
 local Window = Instance.new("Frame")
 Window.Name = "Window"
 Window.BackgroundColor3 = Color3.fromRGB(39, 39, 39)
 Window.Position = UDim2.new(0.5, 0, 0.5, 0)
 Window.AnchorPoint = Vector2.new(0.5, 0.5)
 Window.Size = windowsize -- تطبيق الحجم الجديد
-Window.Transparency = 0.5
+Window.Transparency = 0.3
 Window.BorderSizePixel = 0
 Window.Draggable = false
-Window.ClipsDescendants = false
+Window.ClipsDescendants = true
 Window.SizeConstraint = "RelativeYY"
 Window.Parent = ScreenGui
 
--- زر خارج القائمة
+-- إضافة حواف دائرية للقائمة (حتى لا تصبح مربعة وقبيحة)
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 10) -- حواف دائرية ناعمة
+UICorner.Parent = Window
+
+-- زر خارج القائمة لفتحها وإغلاقها
 local ToggleButton = Instance.new("ImageButton")
 ToggleButton.Visible = true
 ToggleButton.Name = "ToggleButton"
 ToggleButton.BorderSizePixel = 0
-ToggleButton.Image = "rbxassetid://122739889648244" -- إضافة الصورة المطلوبة
+ToggleButton.Image = "rbxassetid://122739889648244" -- الصورة تبقى موجودة
 ToggleButton.ImageTransparency = 0
 ToggleButton.Active = true
-ToggleButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- يبدأ باللون الأحمر
-ToggleButton.Position = UDim2.new(0.05, 0, 0.05, 0) -- يبقى خارج القائمة
-ToggleButton.Size = UDim2.new(0.1, 0, 0.1, 0)
+ToggleButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- يبدأ بلون أحمر
+ToggleButton.Position = UDim2.new(0.02, 0, 0.1, 0) -- خارج القائمة
+ToggleButton.Size = UDim2.new(0.08, 0, 0.08, 0)
 ToggleButton.Transparency = 0
-ToggleButton.BackgroundTransparency = 0
+ToggleButton.BackgroundTransparency = 1 -- نجعل الخلفية شفافة للحفاظ على شكل الزر الأصلي
 ToggleButton.BorderSizePixel = 0
 ToggleButton.ZIndex = 5
-ToggleButton.SizeConstraint = "RelativeXY"
-ToggleButton.Parent = ScreenGui -- يكون خارج القائمة وليس داخل `Window`
+ToggleButton.SizeConstraint = "RelativeYY"
+ToggleButton.Parent = ScreenGui -- الزر يبقى خارج القائمة
+
+-- زر إغلاق داخل القائمة
+local CloseButton = Instance.new("TextButton")
+CloseButton.Name = "CloseButton"
+CloseButton.Text = "X"
+CloseButton.TextScaled = true
+CloseButton.BackgroundColor3 = Color3.fromRGB(255, 50, 50) -- لون أحمر للإغلاق
+CloseButton.Position = UDim2.new(0.93, 0, 0.02, 0)
+CloseButton.Size = UDim2.new(0.05, 0, 0.05, 0)
+CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+CloseButton.Font = Enum.Font.SourceSansBold
+CloseButton.Parent = Window
+
+-- إضافة حواف دائرية لزر الإغلاق
+local UICornerClose = Instance.new("UICorner")
+UICornerClose.CornerRadius = UDim.new(1, 0)
+UICornerClose.Parent = CloseButton
 
 -- وظيفة إغلاق وفتح القائمة
 local isOpen = true
@@ -47,17 +69,35 @@ local function ToggleMenu()
     Window.Visible = isOpen
 end
 ToggleButton.MouseButton1Click:Connect(ToggleMenu)
+CloseButton.MouseButton1Click:Connect(ToggleMenu)
 
--- تأثير ألوان الـ RGB (Rainbow Effect)
+-- تأثير ألوان RGB مع الحفاظ على الصورة
 local function RainbowEffect()
     while true do
         for i = 0, 1, 0.01 do
             local color = Color3.fromHSV(i, 1, 1) -- تحويل إلى ألوان الطيف المتغيرة
-            ToggleButton.BackgroundColor3 = color
+            ToggleButton.ImageColor3 = color -- تغيير لون الصورة فقط وليس الزر بالكامل
             task.wait(0.05) -- سرعة تغيير الألوان
         end
     end
 end
 task.spawn(RainbowEffect) -- تشغيل تأثير الألوان
 
-return ScreenGui, Window, ToggleButton
+-- إنشاء زر عادي داخل القائمة (إعادة الأزرار المفقودة)
+local ExampleButton = Instance.new("TextButton")
+ExampleButton.Name = "ExampleButton"
+ExampleButton.Text = "زر تجريبي"
+ExampleButton.TextScaled = true
+ExampleButton.BackgroundColor3 = Color3.fromRGB(100, 100, 255) -- لون أزرق
+ExampleButton.Position = UDim2.new(0.1, 0, 0.2, 0)
+ExampleButton.Size = UDim2.new(0.8, 0, 0.1, 0)
+ExampleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+ExampleButton.Font = Enum.Font.SourceSansBold
+ExampleButton.Parent = Window
+
+-- إضافة حواف دائرية للزر
+local UICornerExample = Instance.new("UICorner")
+UICornerExample.CornerRadius = UDim.new(0, 10)
+UICornerExample.Parent = ExampleButton
+
+return ScreenGui, Window, ToggleButton, CloseButton, ExampleButton
