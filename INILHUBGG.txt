@@ -218,7 +218,7 @@ end
 
 local iconsize = 0.15
 local Icon = Instance.new("ImageButton")
-Icon.Visible = false
+Icon.Visible = true
 Icon.Name = "Icon"
 Icon.BorderSizePixel = 0
 Icon.Image = IconIn
