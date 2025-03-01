@@ -130,9 +130,9 @@ local SearchIn = "rbxassetid://12112852615"
 local MenuIn = "rbxassetid://11949054349"
 local OutIn = "rbxassetid://11949055629"
 --Minimized
-local IconIn = "rbxassetid://122739889648244"
+local IconIn = "rbxassetid://12213561084"
 --Scroll
-local MoreIn = "rbxassetid://119491858875"
+local MoreIn = "rbxassetid://11949185875"
 --Features
 local TogOn = "rbxassetid://12007342639"
 local TogOff = "rbxassetid://12007348679"
